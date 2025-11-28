@@ -1,0 +1,7 @@
+id=auto_ubuntu
+name=Ubuntu For Android
+version=V1
+versionCode=1
+author=FlyCome
+description=Auto Install Ubuntu Rootfs For Android (Chroot)
+#updateJson=
