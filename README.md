@@ -8,8 +8,8 @@
 
 ```
 git clone https://github.com/FLYCOM-E/Ubuntu-For-Android
-```
-```
+cd Ubuntu-For-Android
+chmod +x *
 zip -r Ubuntu_Module.zip *
 ```
 在**Root Manager**刷入。
