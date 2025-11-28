@@ -4,7 +4,7 @@
 
 
 
-##### 安装：
+## 安装：
 
 ```
 git clone https://github.com/FLYCOM-E/Ubuntu-For-Android
@@ -16,12 +16,12 @@ zip -r Ubuntu_Module.zip *
 
 
 
-##### 使用：
+## 使用：
 
 任意终端使用 **Root** 权限输入命令 `Ubuntu` 即可进入 **Ubuntu Chroot** 系统
 
 
 
-##### Other：
+## Other：
 
 项目使用了 **Magisk** 项目的 **busybox** ，感谢 **Magisk** 项目（）
