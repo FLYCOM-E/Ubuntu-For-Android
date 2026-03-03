@@ -1,11 +1,9 @@
 # Ubuntu-For-Android
 
-### 一个快速部署 **Ubuntu Chroot** 至您 **ARM64 Android** 设备的 **Magisk** 模块
-### A Magisk module for quickly deploying **Ubuntu Chroot** to your **ARM64 Android** device
+### 一个快速部署 **Ubuntu Chroot** 至您 **ARM64 Android** 设备的 **Magisk** 模块 | A Magisk module for quickly deploying **Ubuntu Chroot** to your **ARM64 Android** device
 
 
 
-## 使用：
 ## Usage：
 
 任意终端使用 **Root** 权限输入命令 `Ubuntu`
@@ -22,7 +20,6 @@ Then use the custom user for subsequent logins instead of **Root**.
 
 
 
-## Other：
 ## Other：
 
 此模块部署的 **Ubuntu** 系统不会开机自启、常驻后台，遵守即用即走概念，如您需要后台任务建议使用 [**Tmux**](https://github.com/tmux/tmux) 或类似项目即可，快速安装使用：`apt update && apt install tmux`，`tmux new -s test`。
