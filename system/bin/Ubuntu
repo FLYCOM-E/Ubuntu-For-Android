@@ -2,7 +2,7 @@
 UBUNTUPATH="/data/Ubuntu"
 
 daemon=0
-if ! pgrep "Ubuntu" >/dev/null 2>&1; then
+if ! pgrep -f "Ubuntu" | grep -v "$$" >/dev/null 2>&1; then
     "$UBUNTUPATH/busybox" mount -o remount,dev,suid /data 2>/dev/null
     "$UBUNTUPATH/busybox" mount --bind /dev "$UBUNTUPATH/dev" 2>/dev/null
     "$UBUNTUPATH/busybox" mount --bind /sys "$UBUNTUPATH/sys" 2>/dev/null
