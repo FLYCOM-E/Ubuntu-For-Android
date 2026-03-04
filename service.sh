@@ -2,5 +2,5 @@
 HOME="${0%/*}"
 
 if [ -f "$HOME/DAEMON" ]; then
-    nohup setsid Ubuntu --start &
+    (setsid Ubuntu --start >/dev/null 2>&1 < /dev/null &) &
 fi
