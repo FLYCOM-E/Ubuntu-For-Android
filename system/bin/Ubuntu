@@ -2,13 +2,13 @@
 UBUNTUPATH="/data/Ubuntu"
 
 daemon=0
-if ! pgrep -f "Ubuntu" | grep -v "$$" >/dev/null 2>&1; then
-    "$UBUNTUPATH/busybox" mount -o remount,dev,suid /data 2>/dev/null
-    "$UBUNTUPATH/busybox" mount --bind /dev "$UBUNTUPATH/dev" 2>/dev/null
-    "$UBUNTUPATH/busybox" mount --bind /sys "$UBUNTUPATH/sys" 2>/dev/null
-    "$UBUNTUPATH/busybox" mount --bind /proc "$UBUNTUPATH/proc" 2>/dev/null
-    "$UBUNTUPATH/busybox" mount -t devpts devpts "$UBUNTUPATH/dev/pts" 2>/dev/null
-    "$UBUNTUPATH/busybox" mount --bind /sdcard "$UBUNTUPATH/sdcard" 2>/dev/null
+if ! grep -p "$UBUNTUPATH/proc" /proc/mounts; then
+    "$UBUNTUPATH/boot/busybox" mount -o remount,dev,suid /data 2>/dev/null
+    "$UBUNTUPATH/boot/busybox" mount --bind /dev "$UBUNTUPATH/dev" 2>/dev/null
+    "$UBUNTUPATH/boot/busybox" mount --bind /sys "$UBUNTUPATH/sys" 2>/dev/null
+    "$UBUNTUPATH/boot/busybox" mount --bind /proc "$UBUNTUPATH/proc" 2>/dev/null
+    "$UBUNTUPATH/boot/busybox" mount -t devpts devpts "$UBUNTUPATH/dev/pts" 2>/dev/null
+    "$UBUNTUPATH/boot/busybox" mount --bind /sdcard "$UBUNTUPATH/sdcard" 2>/dev/null
 else
     daemon=1
 fi
@@ -73,11 +73,11 @@ if [ "$?" != 0 ]; then
 fi
 
 if [ "$daemon" = 0 ]; then
-    "$UBUNTUPATH/busybox" umount "$UBUNTUPATH/dev/pts" 2>/dev/null
-    "$UBUNTUPATH/busybox" umount "$UBUNTUPATH/dev" 2>/dev/null
-    "$UBUNTUPATH/busybox" umount "$UBUNTUPATH/proc" 2>/dev/null
-    "$UBUNTUPATH/busybox" umount "$UBUNTUPATH/sys" 2>/dev/null
-    "$UBUNTUPATH/busybox" umount "$UBUNTUPATH/sdcard" 2>/dev/null
+    "$UBUNTUPATH/boot/busybox" umount "$UBUNTUPATH/dev/pts" 2>/dev/null
+    "$UBUNTUPATH/boot/busybox" umount "$UBUNTUPATH/dev" 2>/dev/null
+    "$UBUNTUPATH/boot/busybox" umount "$UBUNTUPATH/proc" 2>/dev/null
+    "$UBUNTUPATH/boot/busybox" umount "$UBUNTUPATH/sys" 2>/dev/null
+    "$UBUNTUPATH/boot/busybox" umount "$UBUNTUPATH/sdcard" 2>/dev/null
 fi
 
 true

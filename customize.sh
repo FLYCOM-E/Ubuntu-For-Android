@@ -1,5 +1,5 @@
 #!/system/bin/sh
-ROOTFS_NAME="Ubuntu_26.tar.xz"
+ROOTFS_NAME="Ubuntu_26.04.tar.xz"
 UBUNTUPATH="$(cat $MODPATH/PATH)"
 mkdir -p "$UBUNTUPATH"
 
