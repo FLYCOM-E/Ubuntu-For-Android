@@ -1,19 +1,24 @@
 #!/system/bin/sh
 UBUNTUPATH="/data/Ubuntu"
 
-"$UBUNTUPATH/busybox" mount -o remount,dev,suid /data 2>/dev/null
-"$UBUNTUPATH/busybox" mount --bind /dev "$UBUNTUPATH/dev" 2>/dev/null
-"$UBUNTUPATH/busybox" mount --bind /sys "$UBUNTUPATH/sys" 2>/dev/null
-"$UBUNTUPATH/busybox" mount --bind /proc "$UBUNTUPATH/proc" 2>/dev/null
-"$UBUNTUPATH/busybox" mount -t devpts devpts "$UBUNTUPATH/dev/pts" 2>/dev/null
-"$UBUNTUPATH/busybox" mount --bind /sdcard "$UBUNTUPATH/sdcard" 2>/dev/null
+daemon=0
+if ! pgrep "Ubuntu" >/dev/null 2>&1; then
+    "$UBUNTUPATH/busybox" mount -o remount,dev,suid /data 2>/dev/null
+    "$UBUNTUPATH/busybox" mount --bind /dev "$UBUNTUPATH/dev" 2>/dev/null
+    "$UBUNTUPATH/busybox" mount --bind /sys "$UBUNTUPATH/sys" 2>/dev/null
+    "$UBUNTUPATH/busybox" mount --bind /proc "$UBUNTUPATH/proc" 2>/dev/null
+    "$UBUNTUPATH/busybox" mount -t devpts devpts "$UBUNTUPATH/dev/pts" 2>/dev/null
+    "$UBUNTUPATH/busybox" mount --bind /sdcard "$UBUNTUPATH/sdcard" 2>/dev/null
+else
+    daemon=1
+fi
 
 clear
-echo "\033[1;3;96m===============================\033[0m\n"
-echo "\033[1;93m Ubuntu TTY\033[0m\n"
-echo "\033[1;3;96m===============================\033[0m\n"
+echo -e "\033[1;3;96m===============================\033[0m\n"
+echo -e "\033[1;93m Ubuntu TTY\033[0m\n"
+echo -e "\033[1;3;96m===============================\033[0m\n"
 
-"$UBUNTUPATH/busybox" chroot "$UBUNTUPATH" /usr/bin/bash -c "
+"$UBUNTUPATH/boot/busybox" chroot "$UBUNTUPATH" /usr/bin/bash -c "
     export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:\$PATH\";
     export TMPDIR=/tmp;
     export TERM=xterm-256color;
@@ -22,6 +27,22 @@ echo "\033[1;3;96m===============================\033[0m\n"
     groupadd -g 1003 aid_graphics 2>/dev/null;
     usermod -g 3003 -G 3003,3004 -a _apt 2>/dev/null;
     usermod -G 3003 -a root 2>/dev/null;
+    
+    case \"\$1\" in
+        --start)
+            if [ \"\$daemon\" = 1 ]; then
+                exit 0
+            fi
+            /etc/init.d/dbus start
+            for bash in /etc/init.d/*; do
+                sh \"\$bash\" start
+            done
+            while true; do
+                sleep 300
+            done
+            ;;
+    esac
+    
     while true; do
         echo -en \"\033[1;92mLogin: \033[0m\";
         read user_name;
@@ -51,9 +72,14 @@ if [ "$?" != 0 ]; then
     read null
 fi
 
-"$UBUNTUPATH/busybox" umount "$UBUNTUPATH/dev/pts" 2>/dev/null
-"$UBUNTUPATH/busybox" umount "$UBUNTUPATH/dev" 2>/dev/null
-"$UBUNTUPATH/busybox" umount "$UBUNTUPATH/proc" 2>/dev/null
-"$UBUNTUPATH/busybox" umount "$UBUNTUPATH/sys" 2>/dev/null
-"$UBUNTUPATH/busybox" umount "$UBUNTUPATH/sdcard" 2>/dev/null
+if [ "$daemon" = 0 ]; then
+    "$UBUNTUPATH/busybox" umount "$UBUNTUPATH/dev/pts" 2>/dev/null
+    "$UBUNTUPATH/busybox" umount "$UBUNTUPATH/dev" 2>/dev/null
+    "$UBUNTUPATH/busybox" umount "$UBUNTUPATH/proc" 2>/dev/null
+    "$UBUNTUPATH/busybox" umount "$UBUNTUPATH/sys" 2>/dev/null
+    "$UBUNTUPATH/busybox" umount "$UBUNTUPATH/sdcard" 2>/dev/null
+fi
+
 true
+
+
